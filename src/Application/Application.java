@@ -4,11 +4,28 @@ import Exception.StopApplicationException;
 import InPut.UserInPut;
 import Operations.*;
 
+import java.time.Instant;
+import java.util.HashMap;
+import java.util.Map;
+
 public class Application {
+    private static Map<Integer,IOperation> map;
+
+
+
     public static void start(){
         System.out.println("*** START ***");
+        zap();
         run();
         System.out.println("*** FINISH ***");
+    }
+
+    private static void zap() {
+        map = new HashMap<>();
+        map.put(1,new Addition());
+        map.put(2,new Subtraction());
+        map.put(3,new Multiplication());
+        map.put(4,new Division());
     }
 
     private static void run(){
@@ -29,20 +46,14 @@ public class Application {
     private static IOperation getChooseOperation() throws StopApplicationException {
         showMenu();
         int numberOperation = UserInPut.getInt();
-        switch (numberOperation){
-            case 1:
-                return new Addition();
-            case 2:
-                return new Subtraction();
-            case 3:
-                return new Multiplication();
-            case 4:
-                return new Division();
-            case 0:
-                throw new StopApplicationException();
-            default:
-                System.out.println("Нет такой операции");
-                return getChooseOperation();
+        if (numberOperation==0){
+            throw new StopApplicationException();
+        }else{
+            if (map.get(numberOperation)!=null){
+                return map.get(numberOperation);
+            }
+            System.out.println("Нет такой операции");
+            return getChooseOperation();
         }
     }
 
