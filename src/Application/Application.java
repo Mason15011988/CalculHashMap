@@ -28,6 +28,7 @@ public class Application {
         map.put(4,new Division());
     }
 
+
     private static void run(){
         while (true){
             try {
